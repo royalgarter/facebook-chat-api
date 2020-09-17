@@ -421,12 +421,17 @@ function parseDelta(defaultFuncs, api, ctx, globalCallback, v) {
           .post("https://www.facebook.com/api/graphqlbatch/", ctx.jar, form)
           .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
           .then((resData) => {
+            if (!resData || resData.length <= 0) {
+              console.log('E_RESDATA_ERR');
+              return;
+            }
+
             if (resData[resData.length - 1].error_results > 0) {
               console.log(resData[0].o0.errors);
               return;
             }
 
-            if (resData[resData.length - 1].successful_results === 0) {
+            if ((resData[resData.length - 1]||{}).successful_results === 0) {
               console.log( { error: "forcedFetch: there was no successful_results", res: resData });
               return;
             }
@@ -527,12 +532,17 @@ module.exports = function (defaultFuncs, api, ctx) {
       .post("https://www.facebook.com/api/graphqlbatch/", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
       .then((resData) => {
+        if (!resData || resData.length <= 0) {
+          console.log('E_RESDATA_ERR');
+          return;
+        }
+
         if (resData && resData.length > 0 && resData[resData.length - 1].error_results > 0) {
           console.log(resData[0].o0.errors);
           return;
         }
 
-        if (resData[resData.length - 1].successful_results === 0) {
+        if ((resData[resData.length - 1]||{}).successful_results === 0) {
           console.log( { error: "getSeqId: there was no successful_results", res: resData });
           return;
         }
