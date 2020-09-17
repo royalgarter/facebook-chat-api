@@ -422,11 +422,13 @@ function parseDelta(defaultFuncs, api, ctx, globalCallback, v) {
           .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
           .then((resData) => {
             if (resData[resData.length - 1].error_results > 0) {
-              throw resData[0].o0.errors;
+              console.log(resData[0].o0.errors);
+              return;
             }
 
             if (resData[resData.length - 1].successful_results === 0) {
-              throw { error: "forcedFetch: there was no successful_results", res: resData };
+              console.log( { error: "forcedFetch: there was no successful_results", res: resData });
+              return;
             }
 
             var fetchData = resData[0].o0.data.message;
@@ -526,11 +528,13 @@ module.exports = function (defaultFuncs, api, ctx) {
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
       .then((resData) => {
         if (resData && resData.length > 0 && resData[resData.length - 1].error_results > 0) {
-          throw resData[0].o0.errors;
+          console.log(resData[0].o0.errors);
+          return;
         }
 
         if (resData[resData.length - 1].successful_results === 0) {
-          throw { error: "getSeqId: there was no successful_results", res: resData };
+          console.log( { error: "getSeqId: there was no successful_results", res: resData });
+          return;
         }
 
         if (resData[0].o0.data.viewer.message_threads.sync_sequence_id) {
