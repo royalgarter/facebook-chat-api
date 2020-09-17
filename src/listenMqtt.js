@@ -533,7 +533,7 @@ module.exports = function (defaultFuncs, api, ctx) {
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
       .then((resData) => {
         if (!resData || resData.length <= 0) {
-          console.log('E_RESDATA_ERR');
+          console.log('E_RESDATA_ERR', typeof resData, resData);
           return;
         }
 
@@ -547,7 +547,7 @@ module.exports = function (defaultFuncs, api, ctx) {
           return;
         }
 
-        if (resData[0].o0.data.viewer.message_threads.sync_sequence_id) {
+        if (resData[0] && resData[0].o0.data.viewer.message_threads.sync_sequence_id) {
           ctx.lastSeqId = resData[0].o0.data.viewer.message_threads.sync_sequence_id;
           listenMqtt(defaultFuncs, api, ctx, globalCallback);
         }
